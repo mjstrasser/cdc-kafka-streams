@@ -65,6 +65,6 @@ class TopologyBuilder(
     private fun transactionIdFrom(message: SpecificRecord): String? = message.transactionId
 
     private fun transformTransaction(key: String, trans: Transaction): List<KeyValue<String, SpecificRecord>> {
-        TODO("Not yet implemented")
+        return listOf()
     }
 }

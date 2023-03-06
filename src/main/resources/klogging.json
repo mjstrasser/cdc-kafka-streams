@@ -16,6 +16,17 @@
           ]
         }
       ]
+    },
+    {
+      "fromLoggerBase": "mjs.cdc",
+      "levelRanges": [
+        {
+          "fromMinLevel": "DEBUG",
+          "toSinks": [
+            "stdout"
+          ]
+        }
+      ]
     }
   ]
 }
