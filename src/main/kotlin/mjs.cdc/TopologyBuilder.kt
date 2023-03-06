@@ -64,7 +64,8 @@ class TopologyBuilder(
 
     private fun transactionIdFrom(message: SpecificRecord): String? = message.transactionId
 
-    private fun transformTransaction(key: String, trans: Transaction): List<KeyValue<String, SpecificRecord>> {
-        return listOf()
-    }
+    private fun transformTransaction(
+        transactionId: String,
+        transaction: Transaction,
+    ): List<KeyValue<String, SpecificRecord>> = EntityBuilder.build(transactionId, transaction)
 }

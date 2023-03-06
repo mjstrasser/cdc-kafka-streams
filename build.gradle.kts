@@ -19,14 +19,13 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("org.apache.kafka:kafka-streams:3.4.0")
-    implementation("org.apache.kafka:kafka-clients:3.4.0")
     implementation("io.confluent:kafka-streams-avro-serde:7.3.2")
 
     implementation("org.apache.avro:avro:1.11.1")
 
     implementation("io.klogging:slf4j-klogging:0.3.0")
 
-    testImplementation("org.apache.kafka:kafka-streams-test-utils:3.2.1")
+    testImplementation("org.apache.kafka:kafka-streams-test-utils:3.4.0")
     testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
 }
 
