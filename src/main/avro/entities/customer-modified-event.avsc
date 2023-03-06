@@ -29,7 +29,8 @@
       "type": [
         "null",
         "mjs.entities.Customer"
-      ]
+      ],
+      "default": null
     },
     {
       "name": "customerNames",
