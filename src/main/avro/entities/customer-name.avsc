@@ -1,0 +1,54 @@
+{
+  "name": "CustomerName",
+  "namespace": "mjs.entities",
+  "doc": "Representation of a customer name",
+  "type": "record",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "createdTimestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-micros"
+      }
+    },
+    {
+      "name": "lastUpdateTimestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-micros"
+      }
+    },
+    {
+      "name": "customerId",
+      "type": "long"
+    },
+    {
+      "name": "title",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "name",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "sortName",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    }
+  ]
+}

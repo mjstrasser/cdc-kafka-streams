@@ -1,0 +1,21 @@
+{
+  "sinks": {
+    "stdout": {
+      "renderWith": "RENDER_ANSI",
+      "sendTo": "STDOUT"
+    }
+  },
+  "logging": [
+    {
+      "fromLoggerBase": "org.apache",
+      "levelRanges": [
+        {
+          "fromMinLevel": "INFO",
+          "toSinks": [
+            "stdout"
+          ]
+        }
+      ]
+    }
+  ]
+}

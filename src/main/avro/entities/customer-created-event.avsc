@@ -1,0 +1,48 @@
+{
+  "name": "CustomerCreatedEvent",
+  "namespace": "mjs.entities",
+  "doc": "Event message when a new customer is created",
+  "type": "record",
+  "fields": [
+    {
+      "name": "id",
+      "doc": "Unique ID of the event message",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "timestamp",
+      "doc": "Timestamp of the most recent update to a database record",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-micros"
+      }
+    },
+    {
+      "name": "customerId",
+      "type": "long"
+    },
+    {
+      "name": "customer",
+      "type": "mjs.entities.Customer"
+    },
+    {
+      "name": "customerNames",
+      "type": {
+        "type": "array",
+        "items": "mjs.entities.CustomerName"
+      },
+      "default": []
+    },
+    {
+      "name": "customerAddresses",
+      "type": {
+        "type": "array",
+        "items": "mjs.entities.CustomerAddress"
+      },
+      "default": []
+    }
+  ]
+}

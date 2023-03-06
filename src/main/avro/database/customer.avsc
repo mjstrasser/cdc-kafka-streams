@@ -1,0 +1,97 @@
+{
+  "type": "record",
+  "name": "DataRecord",
+  "namespace": "mjs.database.customer",
+  "fields": [
+    {
+      "name": "data",
+      "type": {
+        "type": "record",
+        "name": "Data",
+        "fields": [
+          {
+            "name": "customer_id",
+            "type": "long"
+          },
+          {
+            "name": "created",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-micros"
+            }
+          },
+          {
+            "name": "last_updated",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-micros"
+            }
+          },
+          {
+            "name": "gender",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "beforeData",
+      "type": [
+        "null",
+        "Data"
+      ],
+      "default": null
+    },
+    {
+      "name": "headers",
+      "type": {
+        "type": "record",
+        "name": "Headers",
+        "namespace": "mjs.database.header",
+        "fields": [
+          {
+            "name": "operation",
+            "type": {
+              "type": "enum",
+              "name": "operation",
+              "symbols": [
+                "INSERT",
+                "UPDATE",
+                "DELETE",
+                "REFRESH"
+              ]
+            }
+          },
+          {
+            "name": "timestamp",
+            "type": "string"
+          },
+          {
+            "name": "transactionId",
+            "type": "string"
+          },
+          {
+            "name": "transactionEventCounter",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "transactionLastEvent",
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "default": null
+          }
+        ]
+      }
+    }
+  ]
+}

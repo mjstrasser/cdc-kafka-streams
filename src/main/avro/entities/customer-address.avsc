@@ -1,0 +1,42 @@
+{
+  "name": "CustomerAddress",
+  "namespace": "mjs.entities",
+  "doc": "Representation of a customer name",
+  "type": "record",
+  "fields": [
+    {
+      "name": "customerId",
+      "type": "long"
+    },
+    {
+      "name": "addressId",
+      "type": "long"
+    },
+    {
+      "name": "createdTimestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-micros"
+      }
+    },
+    {
+      "name": "lastUpdateTimestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-micros"
+      }
+    },
+    {
+      "name": "addressType",
+      "type": {
+        "name": "AddressTypes",
+        "type": "enum",
+        "symbols": [
+          "Residential",
+          "Postal",
+          "Other"
+        ]
+      }
+    }
+  ]
+}

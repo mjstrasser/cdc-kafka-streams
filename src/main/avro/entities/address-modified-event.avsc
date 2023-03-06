@@ -1,0 +1,32 @@
+{
+  "name": "AddressModifiedEvent",
+  "namespace": "mjs.entities",
+  "doc": "Event message when an address is modified",
+  "type": "record",
+  "fields": [
+    {
+      "name": "id",
+      "doc": "Unique ID of the event message",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "timestamp",
+      "doc": "Timestamp of the most recent update to a database record",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-micros"
+      }
+    },
+    {
+      "name": "addressId",
+      "type": "long"
+    },
+    {
+      "name": "address",
+      "type": "mjs.entities.Address"
+    }
+  ]
+}

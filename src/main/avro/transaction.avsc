@@ -1,0 +1,54 @@
+{
+  "namespace": "mjs.cdc",
+  "name": "Transaction",
+  "type": "record",
+  "fields": [
+    {
+      "name": "transactionId",
+      "type": "string",
+      "default": "NONE"
+    },
+    {
+      "name": "messageCounter",
+      "type": "long",
+      "default": 0
+    },
+    {
+      "name": "totalMessages",
+      "type": "long",
+      "default": -1
+    },
+    {
+      "name": "customers",
+      "type": {
+        "type": "array",
+        "items": "mjs.database.customer.DataRecord"
+      },
+      "default": []
+    },
+    {
+      "name": "customerNames",
+      "type": {
+        "type": "array",
+        "items": "mjs.database.customer_name.DataRecord"
+      },
+      "default": []
+    },
+    {
+      "name": "customerAddresses",
+      "type": {
+        "type": "array",
+        "items": "mjs.database.customer_address.DataRecord"
+      },
+      "default": []
+    },
+    {
+      "name": "addresses",
+      "type": {
+        "type": "array",
+        "items": "mjs.database.address.DataRecord"
+      },
+      "default": []
+    }
+  ]
+}
