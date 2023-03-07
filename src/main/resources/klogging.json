@@ -10,7 +10,7 @@
       "fromLoggerBase": "org.apache",
       "levelRanges": [
         {
-          "fromMinLevel": "INFO",
+          "fromMinLevel": "WARN",
           "toSinks": [
             "stdout"
           ]
@@ -21,7 +21,7 @@
       "fromLoggerBase": "mjs.cdc",
       "levelRanges": [
         {
-          "fromMinLevel": "DEBUG",
+          "fromMinLevel": "INFO",
           "toSinks": [
             "stdout"
           ]
