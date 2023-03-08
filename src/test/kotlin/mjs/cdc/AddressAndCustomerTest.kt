@@ -23,11 +23,14 @@ import mjs.cdc.helper.database.addressData
 import mjs.cdc.helper.database.addressMessage
 import mjs.cdc.helper.database.customerAddressData
 import mjs.cdc.helper.database.customerAddressMessage
+import mjs.cdc.helper.database.customerData
+import mjs.cdc.helper.database.customerMessage
 import mjs.cdc.helper.database.headers
 import mjs.cdc.helper.randomId
 import mjs.cdc.helper.randomTxnId
 import mjs.database.header.operation
 import mjs.entities.AddressCreatedEvent
+import mjs.entities.CustomerCreatedEvent
 import mjs.entities.CustomerModifiedEvent
 import mjs.kotest.description
 
@@ -68,6 +71,42 @@ class AddressAndCustomerTest : TopologyTestSpec({
         with(sortedEvents.last()) {
             key shouldBe customerId.toString()
             value.shouldBeTypeOf<CustomerModifiedEvent>()
+        }
+    }
+
+    test(
+        "Inserting `Customer`, `Address` and `CustomerAddress` records produces one `AddressCreatedEvent`" +
+            " and one `CustomerCreatedEvent`",
+    ) {
+        val txnId = randomTxnId()
+        val customerId = randomId()
+        val addressId = randomId()
+        sendInput(
+            addressMessage(
+                headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false),
+                addressData(addressId),
+            ),
+            customerMessage(
+                headers(txnId, operation.INSERT, eventCounter = 2, lastEvent = false),
+                customerData(customerId),
+            ),
+            customerAddressMessage(
+                headers(txnId, operation.INSERT, eventCounter = 3, lastEvent = true),
+                customerAddressData(customerId, addressId),
+            ),
+        )
+
+        val events = readOutputs()
+
+        events shouldHaveSize 2
+        val sortedEvents = events.sortedBy { it.value::class.java.simpleName }
+        with(sortedEvents.first()) {
+            key shouldBe addressId.toString()
+            value.shouldBeTypeOf<AddressCreatedEvent>()
+        }
+        with(sortedEvents.last()) {
+            key shouldBe customerId.toString()
+            value.shouldBeTypeOf<CustomerCreatedEvent>()
         }
     }
 })
