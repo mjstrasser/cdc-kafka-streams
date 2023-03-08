@@ -11,7 +11,7 @@ article. It uses CDC message formats based on those used in that client work.
 The [Kafka Streams](https://kafka.apache.org/documentation/streams) topology is defined
 in [TopologyBuilder.kt](src/main/kotlin/mjs/cdc/TopologyBuilder.kt). It is tested using the
 [TopologyTestDriver](https://kafka.apache.org/34/documentation/streams/developer-guide/testing.html)
-with current test results [published here](https://mjstrasser.github.io/cdc-kafka-streams).
+with current test results [published here](https://cdc-kafka-streams.michaelstrasser.com).
 
 ## Avro serialization
 
@@ -32,4 +32,4 @@ Supporting code includes:
 
 * [Kotlin type aliases](src/main/kotlin/mjs/cdc/TypeAliases.kt) that make working with CDC message
   classes easier.
-* [Tester helpers](src/test/kotlin/mjs/cdc/helper) that make writing clear tests simpler.
+* [Test helpers](src/test/kotlin/mjs/cdc/helper) that make writing clear tests simpler.
