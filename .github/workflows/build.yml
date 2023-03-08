@@ -7,9 +7,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-publish:
+  test-and-publish:
     name: Run the tests and publish the results
     runs-on: ubuntu-latest
+    env:
+      GIT_COMMIT: ${{ github.sha }}
+      GIT_MESSAGE: ${{ github.event.head_commit.message }}
 
     permissions:
       contents: write
