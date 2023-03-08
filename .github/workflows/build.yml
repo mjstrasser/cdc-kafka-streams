@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew clean test
 
       - name: Create CNAME file
-        run: echo "cdc-kafka-streams.michaelstrasser.com" ./build/reports/kotest/CNAME
+        run: echo "cdc-kafka-streams.michaelstrasser.com" > ./build/reports/kotest/CNAME
 
       - name: Publish test results
         uses: peaceiris/actions-gh-pages@v3
