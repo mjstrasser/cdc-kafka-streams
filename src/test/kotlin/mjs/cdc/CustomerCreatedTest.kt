@@ -32,7 +32,7 @@ class CustomerCreatedTest : TopologyTestSpec({
 
     description(
         """
-        Tests of inserting one or more Customer records in the the database in a single transaction.
+        Tests of inserting one or more `Customer` records in the the database in a single transaction.
         """.trimIndent(),
     )
 

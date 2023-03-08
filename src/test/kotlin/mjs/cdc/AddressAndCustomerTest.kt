@@ -38,7 +38,7 @@ class AddressAndCustomerTest : TopologyTestSpec({
 
     description(
         """
-        Tests of inserts into Address and CustomerAddress tables in the same transaction.
+        Tests of inserts into `Customer`, `Address` and `CustomerAddress` tables in the same transaction.
         """.trimIndent(),
     )
 

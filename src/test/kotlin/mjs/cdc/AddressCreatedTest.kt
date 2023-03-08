@@ -30,7 +30,7 @@ class AddressCreatedTest : TopologyTestSpec({
 
     description(
         """
-        Tests of inserting one or more Address records in the the database in a single transaction.
+        Tests of inserting one or more `Address` records in the the database in a single transaction.
         """.trimIndent(),
     )
 
