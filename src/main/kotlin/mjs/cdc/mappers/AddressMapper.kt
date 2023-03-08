@@ -18,6 +18,9 @@ package mjs.cdc.mappers
 import mjs.cdc.AddressData
 import mjs.entities.Address
 
+/**
+ * Map from a database`Addresses` database row to an entity `Address`.
+ */
 object AddressMapper : Mapper<AddressData, Address> {
     override fun map(from: AddressData): Address = Address.newBuilder()
         .setId(from.addressId)

@@ -36,6 +36,13 @@ object AddressEventBuilder {
 
     private val logger = noCoLogger<AddressEventBuilder>()
 
+    /**
+     * Build an [AddressCreatedEvent] or an [AddressModifiedEvent] from a list of address CDC messages
+     * for a single address ID value.
+     *
+     * If there is an insert into `Addresses` table, build an [AddressCreatedEvent]; else build an
+     * [AddressModifiedEvent].
+     */
     fun build(messages: List<SpecificRecord>): SpecificRecord? {
         if (messages.isEmpty()) {
             logger.warn("No messages were supplied to build an address event")

@@ -18,6 +18,9 @@ package mjs.cdc.mappers
 import mjs.cdc.CustomerData
 import mjs.entities.Customer
 
+/**
+ * Map from a database`Customers` database row to an entity `Customer`.
+ */
 object CustomerMapper : Mapper<CustomerData, Customer> {
     override fun map(from: CustomerData): Customer = Customer.newBuilder()
         .setId(from.customerId)

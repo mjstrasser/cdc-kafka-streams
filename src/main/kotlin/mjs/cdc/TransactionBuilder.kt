@@ -15,13 +15,31 @@
 */
 package mjs.cdc
 
-import io.klogging.NoCoLogging
+import io.klogging.noCoLogger
 import org.apache.avro.specific.SpecificRecord
 
-object TransactionBuilder : NoCoLogging {
+/**
+ * Object that builds and manages [Transaction] objects, that collect database row objects belonging to the same
+ * transaction.
+ */
+object TransactionBuilder {
+
+    private val logger = noCoLogger<TransactionBuilder>()
+
+    /**
+     * A new, empty transaction object. If the Avro definition has required fields without defaults, they
+     * must be set here.
+     */
     fun newTransaction(): Transaction = Transaction.newBuilder()
         .build()
 
+    /**
+     * Add a database row to a [Transaction], returning a new instance if it was added successfully.
+     *
+     * In case of error, return the existing instance.
+     *
+     * This example code omits some sense checks, e.g. that this message is from the same transaction.
+     */
     fun addEvent(
         transactionId: String,
         message: SpecificRecord,
@@ -45,6 +63,8 @@ object TransactionBuilder : NoCoLogging {
             }
         }
 
+        // If this is the last event, we know how many messages are expected.
+        // Otherwise, copy the previous value (default value is -1).
         builder.totalMessages =
             if (headers.transactionLastEvent == true) {
                 headers.transactionEventCounter
@@ -56,6 +76,9 @@ object TransactionBuilder : NoCoLogging {
         return builder.build()
     }
 
+    /**
+     * Extension function on [Transaction] that creates a new builder with current values set.
+     */
     private fun Transaction.copyBuilder(transactionId: String) = Transaction.newBuilder()
         .setTransactionId(transactionId)
         .setMessageCounter(messageCounter)
@@ -65,6 +88,11 @@ object TransactionBuilder : NoCoLogging {
         .setCustomerAddresses(customerAddresses)
         .setAddresses(addresses)
 
+    /**
+     * A transaction is complete when the number of messages added is the same as the number expected.
+     *
+     * NB: In this example code, there is no checking for duplicate values.
+     */
     fun isComplete(transaction: Transaction): Boolean =
         transaction.messageCounter == transaction.totalMessages
 }

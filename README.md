@@ -13,16 +13,18 @@ in [TopologyBuilder.kt](src/main/kotlin/mjs/cdc/TopologyBuilder.kt). It is teste
 [TopologyTestDriver](https://kafka.apache.org/34/documentation/streams/developer-guide/testing.html)
 with current test results [published here](https://cdc-kafka-streams.michaelstrasser.com).
 
+This example does not include code for detecting incomplete transactions and controlling state store
+size.
+
 ## Avro serialization
 
 All message values are serialized using [Apache Avro](https://avro.apache.org). Messages are
-defined in Avro and Java classes generated from those definitions.
+first defined in Avro, then Java classes are generated from those definitions.
 
 For example:
 
 * [transaction.avsc](src/main/avro/transaction.avsc) defines the `Transaction` class.
-* The Gradle task `generateAvroJava` generates the Java class `Transaction.java` that is used
-  in the code.
+* The Gradle task `generateAvroJava` generates `Transaction.java` that is used in the code.
 * Kafka Streams serializes `Transaction` objects for storing in the state store and deserializes
   them when needed.
 
@@ -33,3 +35,11 @@ Supporting code includes:
 * [Kotlin type aliases](src/main/kotlin/mjs/cdc/TypeAliases.kt) that make working with CDC message
   classes easier.
 * [Test helpers](src/test/kotlin/mjs/cdc/helper) that make writing clear tests simpler.
+
+## Other libraries
+
+* Testing uses the amazing and flexible [Kotest framework for Kotlin](https://kotest.io).
+  (This example code does not include unit tests; only topology tests.)
+* Test reports are generated using [Kotest HTML
+  Reporter](https://github.com/mjstrasser/kotest-html-reporter).
+* Logging uses [Klogging framework for Kotlin](https://klogging.io).

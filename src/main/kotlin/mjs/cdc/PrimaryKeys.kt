@@ -22,6 +22,14 @@ import mjs.entities.CustomerName
 import org.apache.avro.specific.SpecificRecord
 import java.time.Instant
 
+/*
+ * Code for defining primary keys on database table types.
+ *
+ * - For each primary key that is needed, create a data class that implements the PK marker interface
+ *   with properties for the primary key columns.
+ * - Define an extension property on the database table type that returns the value of each column.
+ */
+
 interface PK
 
 data class AddressPk(val id: Long) : PK
@@ -56,6 +64,10 @@ inline val CustomerAddressMessage.pk: CustomerAddressPk
 inline val CustomerAddress.pk: CustomerAddressPk
     get() = CustomerAddressPk(this.customerId, this.addressId)
 
+/**
+ * Extension property on [SpecificRecord] that returns the primary key for each known
+ * database type; or `null` otherwise.
+ */
 inline val SpecificRecord.pk: PK?
     get() = when (this) {
         is AddressMessage -> this.pk

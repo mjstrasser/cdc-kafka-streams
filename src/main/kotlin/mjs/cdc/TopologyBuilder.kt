@@ -33,6 +33,12 @@ import org.apache.kafka.streams.state.KeyValueStore
 
 const val STATE_STORE = "transactions"
 
+/**
+ * Definition of the Kafka Streams topology for combining CDC messages
+ * into transactional domain event messages.
+ *
+ * See https://www.confluent.io/blog/cdc-kafka-for-scalable-microservices-messaging/
+ */
 class TopologyBuilder(
     private val sourceTopic: String,
     private val sinkTopic: String,
@@ -44,6 +50,11 @@ class TopologyBuilder(
     fun build(): Topology {
         val streamsBuilder = StreamsBuilder()
 
+        /**
+         * Stage one: group (repartition) messages by transaction ID, so they can be aggregated.
+         *
+         * This is necessary because the CDC tool cannot create message keys from transaction IDs
+         */
         val grouped: KGroupedStream<String, SpecificRecord> = streamsBuilder
             .stream(
                 sourceTopic,
@@ -54,6 +65,10 @@ class TopologyBuilder(
                 Grouped.with(Serdes.String(), sourceSerde),
             )
 
+        /**
+         * Stage two: aggregate messages by transaction ID into an instance of [Transaction], that is
+         * materialized into a state store.
+         */
         val aggregated: KTable<String, Transaction> = grouped
             .aggregate(
                 { TransactionBuilder.newTransaction() },
@@ -65,6 +80,9 @@ class TopologyBuilder(
                     .withValueSerde(transactionSerde),
             )
 
+        /**
+         * Stage three: transform complete [Transaction] objects into domain event entities.
+         */
         val completeAggregations: KStream<String, Transaction> = aggregated
             .filter { _, trans -> TransactionBuilder.isComplete(trans) }
             .toStream()
@@ -76,8 +94,16 @@ class TopologyBuilder(
         return streamsBuilder.build()
     }
 
+    /**
+     * Return the transaction ID of a message, if present, by delegating to the extension
+     * property.
+     */
     private fun transactionIdFrom(message: SpecificRecord): String? = message.transactionId
 
+    /**
+     * Transform a [Transaction] into zero or more domain entity objects, by delegating
+     * to [EntityBuilder.build].
+     */
     private fun transformTransaction(
         transactionId: String,
         transaction: Transaction,
