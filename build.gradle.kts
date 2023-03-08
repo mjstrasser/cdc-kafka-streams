@@ -28,7 +28,7 @@ dependencies {
 
     testImplementation("org.apache.kafka:kafka-streams-test-utils:3.4.0")
     testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
-    testImplementation("com.michaelstrasser:kotest-html-reporter:0.6.1")
+    testImplementation("com.michaelstrasser:kotest-html-reporter:0.6.2")
 }
 
 tasks.withType<KotlinCompile> {
