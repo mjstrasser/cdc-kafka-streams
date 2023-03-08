@@ -1,6 +1,6 @@
 package mjs.cdc.helper
 
-import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.core.spec.style.FunSpec
 import mjs.cdc.TopologyBuilder
 import org.apache.avro.specific.SpecificRecord
 import org.apache.kafka.streams.TestInputTopic
@@ -10,7 +10,7 @@ import org.apache.kafka.streams.test.TestRecord
 
 abstract class TopologyTestSpec(
     body: TopologyTestSpec.() -> Unit,
-) : DescribeSpec() {
+) : FunSpec() {
 
     private lateinit var testDriver: TopologyTestDriver
     private lateinit var sourceTopic: TestInputTopic<String, SpecificRecord>

@@ -21,32 +21,30 @@ class AddressAndCustomerTest : TopologyTestSpec({
     """.trimIndent()
     )
 
-    describe("Inserting Address and CustomerAddress records") {
-        it("produces one `AddressCreatedEvent` and one `CustomerModifiedEvent`") {
-            val txnId = randomTxnId()
-            val customerId = randomId()
-            val addressId = randomId()
-            sendInput(
-                addressMessage(
-                    headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false),
-                    addressData(addressId),
-                ),
-                customerAddressMessage(
-                    headers(txnId, operation.INSERT, eventCounter = 2, lastEvent = true),
-                    customerAddressData(customerId, addressId),
-                )
+    test("Inserting one Address and one CustomerAddress records produces one `AddressCreatedEvent`" +
+            " and one `CustomerModifiedEvent`") {
+        val txnId = randomTxnId()
+        val customerId = randomId()
+        val addressId = randomId()
+        sendInput(
+            addressMessage(
+                headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false),
+                addressData(addressId),
+            ),
+            customerAddressMessage(
+                headers(txnId, operation.INSERT, eventCounter = 2, lastEvent = true),
+                customerAddressData(customerId, addressId),
             )
+        )
 
-            val events = readOutputs()
+        val events = readOutputs()
 
-            events shouldHaveSize 2
-            events.map { it.value::class.java.simpleName }.toSet().shouldContainExactly(
-                setOf(
-                    "AddressCreatedEvent",
-                    "CustomerModifiedEvent",
-                )
+        events shouldHaveSize 2
+        events.map { it.value::class.java.simpleName }.toSet().shouldContainExactly(
+            setOf(
+                "AddressCreatedEvent",
+                "CustomerModifiedEvent",
             )
-        }
+        )
     }
-
 })

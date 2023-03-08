@@ -19,8 +19,8 @@ class AddressCreatedTest : TopologyTestSpec({
     """.trimIndent()
     )
 
-    describe("Inserting address records into the database") {
-        it("produces one `AddressCreatedEvent` from a single-record transaction") {
+    context("Inserting address records into the database") {
+        test("produces one `AddressCreatedEvent` from a single-record transaction") {
             val txnId = randomTxnId()
             sendInput(
                 addressMessage(headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = true)),
@@ -31,7 +31,7 @@ class AddressCreatedTest : TopologyTestSpec({
             events shouldHaveSize 1
             events.first().value.shouldBeTypeOf<AddressCreatedEvent>()
         }
-        it("produces five `AddressCreatedEvent`s from a five-record transaction") {
+        test("produces five `AddressCreatedEvent`s from a five-record transaction") {
             val txnId = randomTxnId()
             sendInput(
                 addressMessage(headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false)),
