@@ -6,6 +6,6 @@ import mjs.kotest.HtmlReporter
 
 class KotestConfig : AbstractProjectConfig() {
     override fun extensions(): List<Extension> = listOf(
-        HtmlReporter()
+        HtmlReporter(reportFilename = "index.html")
     )
 }
