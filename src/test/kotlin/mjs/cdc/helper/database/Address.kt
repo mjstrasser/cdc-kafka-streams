@@ -26,6 +26,7 @@ import mjs.cdc.helper.randomState
 import mjs.cdc.helper.randomSuburb
 import java.time.Instant
 
+@Suppress("LongParameterList")
 fun addressData(
     id: Long = randomId(),
     created: Instant = randomPastInstant(),

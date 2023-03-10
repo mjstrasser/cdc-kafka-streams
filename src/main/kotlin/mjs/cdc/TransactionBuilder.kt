@@ -40,6 +40,7 @@ object TransactionBuilder {
      *
      * This example code omits some sense checks, e.g. that this message is from the same transaction.
      */
+    @Suppress("ReturnCount")
     fun addEvent(
         transactionId: String,
         message: SpecificRecord,

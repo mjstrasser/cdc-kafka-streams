@@ -23,6 +23,7 @@ import mjs.cdc.helper.randomName
 import mjs.cdc.helper.randomPastInstant
 import java.time.Instant
 
+@Suppress("LongParameterList")
 fun customerNameData(
     customerId: Long = randomId(),
     name: String = randomName(),

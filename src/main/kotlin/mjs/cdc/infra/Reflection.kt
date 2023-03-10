@@ -23,6 +23,7 @@ import java.util.Locale
 /**
  * Reflection code for manipulating builders and other classes generated from Avro schemas.
  */
+@Suppress("TooGenericExceptionCaught")
 object Reflection {
 
     val logger = noCoLogger<Reflection>()
@@ -30,6 +31,7 @@ object Reflection {
     /**
      * Call a function on a class, returning the result of the specified type, or null.
      */
+    @Suppress("SpreadOperator")
     inline fun <T : Any, reified U> T.call(name: String, vararg args: Any): U? {
         val callable = this::class.members.firstOrNull { it.name == name }
         return if (callable == null) {

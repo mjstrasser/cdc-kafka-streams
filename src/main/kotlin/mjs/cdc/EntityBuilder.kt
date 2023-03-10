@@ -16,8 +16,6 @@
 package mjs.cdc
 
 import io.klogging.noCoLogger
-import mjs.cdc.topology.AddressEventBuilder
-import mjs.cdc.topology.CustomerEventBuilder
 import mjs.entities.AddressCreatedEvent
 import mjs.entities.AddressModifiedEvent
 import mjs.entities.CustomerCreatedEvent

@@ -13,15 +13,12 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package mjs.cdc.topology
+package mjs.cdc
 
 import io.klogging.noCoLogger
-import mjs.cdc.AddressData
-import mjs.cdc.AddressMessage
 import mjs.cdc.infra.Reflection.getValue
 import mjs.cdc.infra.Reflection.setValue
 import mjs.cdc.mappers.AddressMapper
-import mjs.cdc.operation
 import mjs.database.header.operation
 import mjs.entities.AddressCreatedEvent
 import mjs.entities.AddressModifiedEvent

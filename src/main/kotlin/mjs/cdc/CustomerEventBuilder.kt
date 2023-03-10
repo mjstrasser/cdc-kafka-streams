@@ -13,15 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package mjs.cdc.topology
+package mjs.cdc
 
 import io.klogging.noCoLogger
-import mjs.cdc.CustomerAddressData
-import mjs.cdc.CustomerAddressMessage
-import mjs.cdc.CustomerData
-import mjs.cdc.CustomerMessage
-import mjs.cdc.CustomerNameData
-import mjs.cdc.CustomerNameMessage
 import mjs.cdc.EntityBuilder.customerIdFrom
 import mjs.cdc.infra.Reflection.getList
 import mjs.cdc.infra.Reflection.getValue
@@ -30,8 +24,6 @@ import mjs.cdc.infra.upsert
 import mjs.cdc.mappers.CustomerAddressMapper
 import mjs.cdc.mappers.CustomerMapper
 import mjs.cdc.mappers.CustomerNameMapper
-import mjs.cdc.operation
-import mjs.cdc.pk
 import mjs.database.header.operation
 import mjs.entities.CustomerAddress
 import mjs.entities.CustomerCreatedEvent
