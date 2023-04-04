@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.8.20"
     id("com.github.davidmc24.gradle.plugin.avro") version "1.6.0"
     id("com.diffplug.spotless") version "6.16.0"
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
