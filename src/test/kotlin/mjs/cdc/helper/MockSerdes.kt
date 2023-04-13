@@ -28,12 +28,8 @@ object MockSerdes {
     val SpecificRecord: Serde<SpecificRecord> = valueSerde()
     val Transaction: Serde<Transaction> = valueSerde()
 
-    private fun <T : SpecificRecord> valueSerde(): SpecificAvroSerde<T> {
-        val serde = SpecificAvroSerde<T>(MockSchemaRegistryClient())
-        serde.configure(
-            mapOf(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG to "mock://dummy"),
-            false,
-        )
-        return serde
-    }
+    private fun <T : SpecificRecord> valueSerde(): SpecificAvroSerde<T> =
+        SpecificAvroSerde<T>(MockSchemaRegistryClient()).apply {
+            configure(mapOf(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG to "mock://dummy"), false)
+        }
 }
