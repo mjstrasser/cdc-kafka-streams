@@ -18,8 +18,9 @@ size.
 
 ## Avro serialization
 
-All message values are serialized using [Apache Avro](https://avro.apache.org). Messages are
-first defined in Avro, then Java classes are generated from those definitions.
+All messages have string-serialized keys and [Apache Avro](https://avro.apache.org)-serialized
+values. In all cases, Avro schema definitions were written manually (see
+[src/main/avro](src/main/avro) directory) and Java classes generated from those definitions
 
 For example:
 
