@@ -29,6 +29,23 @@ For example:
 * Kafka Streams serializes `Transaction` objects for storing in the state store and deserializes
   them when needed.
 
+This design means that all message values are subclasses of Avro
+[`SpecificRecord`](https://avro.apache.org/docs/current/api/java/org/apache/avro/specific/SpecificRecord.html).
+There are a number of Kotlin functions that use ‘switchboards’ to act on messages according to
+their actual type. An example is an extension function that returns the headers object in a
+CDC message:
+
+```kotlin
+val SpecificRecord.headers: Headers?
+    get() = when (this) {
+        is CustomerMessage -> this.headers
+        is CustomerNameMessage -> this.headers
+        is CustomerAddressMessage -> this.headers
+        is AddressMessage -> this.headers
+        else -> null
+    }
+```
+
 ## Other code
 
 Supporting code includes:
