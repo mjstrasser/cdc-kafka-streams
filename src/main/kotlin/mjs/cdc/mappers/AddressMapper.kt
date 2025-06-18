@@ -22,16 +22,18 @@ import mjs.entities.Address
  * Map from a database`Addresses` database row to an entity `Address`.
  */
 object AddressMapper : Mapper<AddressData, Address> {
-    override fun map(from: AddressData): Address = Address.newBuilder()
-        .setId(from.addressId)
-        .setCreatedTimestamp(from.created)
-        .setLastUpdateTimestamp(from.lastUpdated)
-        .setLine1(from.line1)
-        .setLine2(from.line2)
-        .setLine3(from.line3)
-        .setSuburbOrTown(from.suburbTown)
-        .setPostalCode(from.postalCode)
-        .setStateOrProvince(from.stateProvince)
-        .setCountry(from.country)
-        .build()
+    override fun map(from: AddressData): Address =
+        Address
+            .newBuilder()
+            .setId(from.addressId)
+            .setCreatedTimestamp(from.created)
+            .setLastUpdateTimestamp(from.lastUpdated)
+            .setLine1(from.line1)
+            .setLine2(from.line2)
+            .setLine3(from.line3)
+            .setSuburbOrTown(from.suburbTown)
+            .setPostalCode(from.postalCode)
+            .setStateOrProvince(from.stateProvince)
+            .setCountry(from.country)
+            .build()
 }

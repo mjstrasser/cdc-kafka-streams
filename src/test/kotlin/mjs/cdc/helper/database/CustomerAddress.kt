@@ -29,17 +29,24 @@ fun customerAddressData(
     addressType: AddressTypes = AddressTypes.RES,
     created: Instant = randomPastInstant(),
     lastUpdated: Instant = created,
-): CustomerAddressData = CustomerAddressData.newBuilder()
-    .setCreated(created)
-    .setLastUpdated(lastUpdated)
-    .setCustomerId(customerId)
-    .setAddressId(addressId)
-    .setAddressType(addressType)
-    .build()
+): CustomerAddressData =
+    CustomerAddressData
+        .newBuilder()
+        .setCreated(created)
+        .setLastUpdated(lastUpdated)
+        .setCustomerId(customerId)
+        .setAddressId(addressId)
+        .setAddressType(addressType)
+        .build()
 
 fun customerAddressMessage(
     headers: Headers = headers(),
     data: CustomerAddressData = customerAddressData(),
     beforeData: CustomerAddressData? = null,
 ): CustomerAddressMessage =
-    CustomerAddressMessage.newBuilder().setHeaders(headers).setData(data).setBeforeData(beforeData).build()
+    CustomerAddressMessage
+        .newBuilder()
+        .setHeaders(headers)
+        .setData(data)
+        .setBeforeData(beforeData)
+        .build()

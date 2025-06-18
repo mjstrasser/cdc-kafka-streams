@@ -26,7 +26,6 @@ import org.apache.kafka.streams.test.TestRecord
 abstract class TopologyTestSpec(
     body: TopologyTestSpec.() -> Unit,
 ) : FunSpec() {
-
     private lateinit var testDriver: TopologyTestDriver
     private lateinit var sourceTopic: TestInputTopic<String, SpecificRecord>
     private lateinit var sinkTopic: TestOutputTopic<String, SpecificRecord>
@@ -39,32 +38,36 @@ abstract class TopologyTestSpec(
         body()
     }
 
-    fun sendInput(vararg cdcMessages: SpecificRecord) = cdcMessages.forEach { cdc ->
-        sourceTopic.pipeInput(randomKey(), cdc)
-    }
+    fun sendInput(vararg cdcMessages: SpecificRecord) =
+        cdcMessages.forEach { cdc ->
+            sourceTopic.pipeInput(randomKey(), cdc)
+        }
 
     fun readOutputs(): MutableList<TestRecord<String, SpecificRecord>> = sinkTopic.readRecordsToList()
 
     private fun setupTopology() {
-        val topology = TopologyBuilder(
-            "database-cdc-messages",
-            "domain-event-messages",
-            MockSerdes.SpecificRecord,
-            MockSerdes.Transaction,
-            MockSerdes.SpecificRecord,
-        ).build()
+        val topology =
+            TopologyBuilder(
+                "database-cdc-messages",
+                "domain-event-messages",
+                MockSerdes.SpecificRecord,
+                MockSerdes.Transaction,
+                MockSerdes.SpecificRecord,
+            ).build()
 
         testDriver = TopologyTestDriver(topology)
 
-        sourceTopic = testDriver.createInputTopic(
-            "database-cdc-messages",
-            MockSerdes.String.serializer(),
-            MockSerdes.SpecificRecord.serializer(),
-        )
-        sinkTopic = testDriver.createOutputTopic(
-            "domain-event-messages",
-            MockSerdes.String.deserializer(),
-            MockSerdes.SpecificRecord.deserializer(),
-        )
+        sourceTopic =
+            testDriver.createInputTopic(
+                "database-cdc-messages",
+                MockSerdes.String.serializer(),
+                MockSerdes.SpecificRecord.serializer(),
+            )
+        sinkTopic =
+            testDriver.createOutputTopic(
+                "domain-event-messages",
+                MockSerdes.String.deserializer(),
+                MockSerdes.SpecificRecord.deserializer(),
+            )
     }
 }

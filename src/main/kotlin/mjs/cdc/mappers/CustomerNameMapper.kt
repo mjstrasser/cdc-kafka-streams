@@ -22,13 +22,15 @@ import mjs.entities.CustomerName
  * Map from a database`CustomerNames` database row to an entity `CustomerName`.
  */
 object CustomerNameMapper : Mapper<CustomerNameData, CustomerName> {
-    override fun map(from: CustomerNameData): CustomerName = CustomerName.newBuilder()
-        .setId(from.id)
-        .setCreatedTimestamp(from.created)
-        .setLastUpdateTimestamp(from.lastUpdated)
-        .setCustomerId(from.customerId)
-        .setTitle(from.title)
-        .setName(from.name)
-        .setSortName(from.sortName)
-        .build()
+    override fun map(from: CustomerNameData): CustomerName =
+        CustomerName
+            .newBuilder()
+            .setId(from.id)
+            .setCreatedTimestamp(from.created)
+            .setLastUpdateTimestamp(from.lastUpdated)
+            .setCustomerId(from.customerId)
+            .setTitle(from.title)
+            .setName(from.name)
+            .setSortName(from.sortName)
+            .build()
 }

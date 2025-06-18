@@ -30,7 +30,6 @@ import java.util.UUID
 val INSTANT_MIN = Instant.parse("0001-01-01T00:00:00Z")
 
 object AddressEventBuilder {
-
     private val logger = noCoLogger<AddressEventBuilder>()
 
     /**
@@ -55,20 +54,22 @@ object AddressEventBuilder {
         return buildEvent(builder, messages)
     }
 
-    private fun isNewAddress(messages: List<SpecificRecord>): Boolean = messages.any { message ->
-        message is AddressMessage && message.operation == operation.INSERT
-    }
+    private fun isNewAddress(messages: List<SpecificRecord>): Boolean =
+        messages.any { message ->
+            message is AddressMessage && message.operation == operation.INSERT
+        }
 
     private fun <T : SpecificRecord> buildEvent(
         builder: SpecificRecordBuilderBase<T>,
         messages: List<SpecificRecord>,
     ): T {
-        val lastUpdated = messages.fold(INSTANT_MIN) { lastUpdated, message ->
-            when (message) {
-                is AddressMessage -> maxOf(lastUpdated, addAddress(builder, message.data))
-                else -> INSTANT_MIN
+        val lastUpdated =
+            messages.fold(INSTANT_MIN) { lastUpdated, message ->
+                when (message) {
+                    is AddressMessage -> maxOf(lastUpdated, addAddress(builder, message.data))
+                    else -> INSTANT_MIN
+                }
             }
-        }
         builder.setValue("id", UUID.randomUUID())
         builder.setValue("timestamp", lastUpdated)
         return builder.build()

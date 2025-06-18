@@ -35,7 +35,6 @@ import java.time.Instant
 import java.util.UUID
 
 object CustomerEventBuilder {
-
     private val logger = noCoLogger<CustomerEventBuilder>()
 
     fun build(messages: List<SpecificRecord>): SpecificRecord? {
@@ -53,34 +52,36 @@ object CustomerEventBuilder {
         return buildEvent(builder, messages)
     }
 
-    private fun isNewCustomer(messages: List<SpecificRecord>): Boolean = messages.any { message ->
-        message is CustomerMessage && message.operation == operation.INSERT
-    }
+    private fun isNewCustomer(messages: List<SpecificRecord>): Boolean =
+        messages.any { message ->
+            message is CustomerMessage && message.operation == operation.INSERT
+        }
 
     private fun <T : SpecificRecord> buildEvent(
         builder: SpecificRecordBuilderBase<T>,
         messages: List<SpecificRecord>,
     ): T {
-        val lastUpdated = messages.fold(INSTANT_MIN) { lastUpdated, message ->
-            val customerId = customerIdFrom(message)
-            val builderId: Long? = builder.getValue("customerId") // Returns 0 if not set
-            if (builderId != 0L && customerId != builderId) {
-                logger.warn(
-                    "Attempted to add message with ID {messageId} to event for ID {eventId}",
-                    customerId,
-                    builderId,
-                )
-                INSTANT_MIN
-            } else {
-                builder.setValue("customerId", customerId)
-                when (message) {
-                    is CustomerMessage -> maxOf(lastUpdated, addCustomer(builder, message.data))
-                    is CustomerNameMessage -> maxOf(lastUpdated, addCustomerName(builder, message.data))
-                    is CustomerAddressMessage -> maxOf(lastUpdated, addCustomerAddress(builder, message.data))
-                    else -> INSTANT_MIN
+        val lastUpdated =
+            messages.fold(INSTANT_MIN) { lastUpdated, message ->
+                val customerId = customerIdFrom(message)
+                val builderId: Long? = builder.getValue("customerId") // Returns 0 if not set
+                if (builderId != 0L && customerId != builderId) {
+                    logger.warn(
+                        "Attempted to add message with ID {messageId} to event for ID {eventId}",
+                        customerId,
+                        builderId,
+                    )
+                    INSTANT_MIN
+                } else {
+                    builder.setValue("customerId", customerId)
+                    when (message) {
+                        is CustomerMessage -> maxOf(lastUpdated, addCustomer(builder, message.data))
+                        is CustomerNameMessage -> maxOf(lastUpdated, addCustomerName(builder, message.data))
+                        is CustomerAddressMessage -> maxOf(lastUpdated, addCustomerAddress(builder, message.data))
+                        else -> INSTANT_MIN
+                    }
                 }
             }
-        }
         builder.setValue("id", UUID.randomUUID())
         builder.setValue("timestamp", lastUpdated)
         return builder.build()
@@ -101,7 +102,8 @@ object CustomerEventBuilder {
         customerName: CustomerNameData,
     ): Instant {
         val mappedCustomerName = CustomerNameMapper.map(customerName)
-        builder.getList<T, CustomerName>("customerNames")
+        builder
+            .getList<T, CustomerName>("customerNames")
             .upsert(mappedCustomerName, CustomerName::pk)
 
         return mappedCustomerName.lastUpdateTimestamp
@@ -112,7 +114,8 @@ object CustomerEventBuilder {
         customerAddress: CustomerAddressData,
     ): Instant {
         val mappedCustomerAddress = CustomerAddressMapper.map(customerAddress)
-        builder.getList<T, CustomerAddress>("customerAddresses")
+        builder
+            .getList<T, CustomerAddress>("customerAddresses")
             .upsert(mappedCustomerAddress, CustomerAddress::pk)
 
         return mappedCustomerAddress.lastUpdateTimestamp

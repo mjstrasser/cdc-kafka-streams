@@ -23,15 +23,16 @@ import org.apache.avro.specific.SpecificRecord
  * transaction.
  */
 object TransactionBuilder {
-
     private val logger = noCoLogger<TransactionBuilder>()
 
     /**
      * A new, empty transaction object. If the Avro definition has required fields without defaults, they
      * must be set here.
      */
-    fun newTransaction(): Transaction = Transaction.newBuilder()
-        .build()
+    fun newTransaction(): Transaction =
+        Transaction
+            .newBuilder()
+            .build()
 
     /**
      * Add a database row to a [Transaction], returning a new instance if it was added successfully.
@@ -80,20 +81,21 @@ object TransactionBuilder {
     /**
      * Extension function on [Transaction] that creates a new builder with current values set.
      */
-    private fun Transaction.copyBuilder(transactionId: String) = Transaction.newBuilder()
-        .setTransactionId(transactionId)
-        .setMessageCounter(messageCounter)
-        .setTotalMessages(totalMessages)
-        .setCustomers(customers)
-        .setCustomerNames(customerNames)
-        .setCustomerAddresses(customerAddresses)
-        .setAddresses(addresses)
+    private fun Transaction.copyBuilder(transactionId: String) =
+        Transaction
+            .newBuilder()
+            .setTransactionId(transactionId)
+            .setMessageCounter(messageCounter)
+            .setTotalMessages(totalMessages)
+            .setCustomers(customers)
+            .setCustomerNames(customerNames)
+            .setCustomerAddresses(customerAddresses)
+            .setAddresses(addresses)
 
     /**
      * A transaction is complete when the number of messages added is the same as the number expected.
      *
      * NB: In this example code, there is no checking for duplicate values.
      */
-    fun isComplete(transaction: Transaction): Boolean =
-        transaction.messageCounter == transaction.totalMessages
+    fun isComplete(transaction: Transaction): Boolean = transaction.messageCounter == transaction.totalMessages
 }

@@ -46,7 +46,6 @@ class TopologyBuilder(
     private val transactionSerde: Serde<Transaction>,
     private val sinkSerde: Serde<SpecificRecord>,
 ) {
-
     fun build(): Topology {
         val streamsBuilder = StreamsBuilder()
 
@@ -55,37 +54,40 @@ class TopologyBuilder(
          *
          * This is necessary because the CDC tool cannot create message keys from transaction IDs
          */
-        val grouped: KGroupedStream<String, SpecificRecord> = streamsBuilder
-            .stream(
-                sourceTopic,
-                Consumed.with(Serdes.String(), sourceSerde),
-            )
-            .groupBy(
-                { _, message -> transactionIdFrom(message) },
-                Grouped.with(Serdes.String(), sourceSerde),
-            )
+        val grouped: KGroupedStream<String, SpecificRecord> =
+            streamsBuilder
+                .stream(
+                    sourceTopic,
+                    Consumed.with(Serdes.String(), sourceSerde),
+                ).groupBy(
+                    { _, message -> transactionIdFrom(message) },
+                    Grouped.with(Serdes.String(), sourceSerde),
+                )
 
         /**
          * Stage two: aggregate messages by transaction ID into an instance of [Transaction], that is
          * materialized into a state store.
          */
-        val aggregated: KTable<String, Transaction> = grouped
-            .aggregate(
-                { TransactionBuilder.newTransaction() },
-                { key, value, trans ->
-                    TransactionBuilder.addEvent(key, value, trans)
-                },
-                Materialized.`as`<String, Transaction, KeyValueStore<Bytes, ByteArray>>(STATE_STORE)
-                    .withKeySerde(Serdes.String())
-                    .withValueSerde(transactionSerde),
-            )
+        val aggregated: KTable<String, Transaction> =
+            grouped
+                .aggregate(
+                    { TransactionBuilder.newTransaction() },
+                    { key, value, trans ->
+                        TransactionBuilder.addEvent(key, value, trans)
+                    },
+                    Materialized
+                        .`as`<String, Transaction, KeyValueStore<Bytes, ByteArray>>(STATE_STORE)
+                        .withKeySerde(Serdes.String())
+                        .withValueSerde(transactionSerde),
+                )
 
         /**
          * Stage three: transform complete [Transaction] objects into domain event entities.
          */
-        val completeAggregations: KStream<String, Transaction> = aggregated
-            .filter { _, trans -> TransactionBuilder.isComplete(trans) }
-            .toStream()
+        val completeAggregations: KStream<String, Transaction> =
+            aggregated
+                .filter { _, trans -> TransactionBuilder.isComplete(trans) }
+                .toStream()
 
         completeAggregations
             .flatMap { key, trans -> transformTransaction(key, trans) }

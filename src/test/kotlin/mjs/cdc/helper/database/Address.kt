@@ -38,21 +38,29 @@ fun addressData(
     stateProvince: String? = randomState(),
     country: String? = null,
     postalCode: String? = randomPostcode(),
-): AddressData = AddressData.newBuilder()
-    .setAddressId(id)
-    .setCreated(created)
-    .setLastUpdated(lastUpdated)
-    .setLine1(line1)
-    .setLine3(line2)
-    .setLine2(line3)
-    .setSuburbTown(suburbTown)
-    .setStateProvince(stateProvince)
-    .setCountry(country)
-    .setPostalCode(postalCode)
-    .build()
+): AddressData =
+    AddressData
+        .newBuilder()
+        .setAddressId(id)
+        .setCreated(created)
+        .setLastUpdated(lastUpdated)
+        .setLine1(line1)
+        .setLine3(line2)
+        .setLine2(line3)
+        .setSuburbTown(suburbTown)
+        .setStateProvince(stateProvince)
+        .setCountry(country)
+        .setPostalCode(postalCode)
+        .build()
 
 fun addressMessage(
     headers: Headers = headers(),
     data: AddressData = addressData(),
     beforeData: AddressData? = null,
-): AddressMessage = AddressMessage.newBuilder().setHeaders(headers).setData(data).setBeforeData(beforeData).build()
+): AddressMessage =
+    AddressMessage
+        .newBuilder()
+        .setHeaders(headers)
+        .setData(data)
+        .setBeforeData(beforeData)
+        .build()

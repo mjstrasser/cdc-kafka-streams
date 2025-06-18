@@ -28,59 +28,60 @@ import mjs.database.header.operation
 import mjs.entities.CustomerCreatedEvent
 import mjs.kotest.description
 
-class CustomerCreatedTest : TopologyTestSpec({
+class CustomerCreatedTest :
+    TopologyTestSpec({
 
-    description(
-        """
-        Tests of inserting one or more `Customer` records in the the database in a single transaction.
-        """.trimIndent(),
-    )
+        description(
+            """
+            Tests of inserting one or more `Customer` records in the the database in a single transaction.
+            """.trimIndent(),
+        )
 
-    context("Inserting customer records into the database") {
-        test("produces one `CustomerCreatedEvent` from a single-record transaction") {
-            val txnId = randomTxnId()
-            sendInput(
-                customerMessage(headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = true)),
-            )
+        context("Inserting customer records into the database") {
+            test("produces one `CustomerCreatedEvent` from a single-record transaction") {
+                val txnId = randomTxnId()
+                sendInput(
+                    customerMessage(headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = true)),
+                )
 
-            val events = readOutputs()
+                val events = readOutputs()
 
-            events shouldHaveSize 1
-            events.first().value.shouldBeTypeOf<CustomerCreatedEvent>()
+                events shouldHaveSize 1
+                events.first().value.shouldBeTypeOf<CustomerCreatedEvent>()
+            }
+            test("produces five `CustomerCreatedEvent`s from a five-record transaction") {
+                val txnId = randomTxnId()
+                sendInput(
+                    customerMessage(headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false)),
+                    customerMessage(headers(txnId, operation.INSERT, eventCounter = 2, lastEvent = false)),
+                    customerMessage(headers(txnId, operation.INSERT, eventCounter = 3, lastEvent = false)),
+                    customerMessage(headers(txnId, operation.INSERT, eventCounter = 4, lastEvent = false)),
+                    customerMessage(headers(txnId, operation.INSERT, eventCounter = 5, lastEvent = true)),
+                )
+
+                val events = readOutputs()
+
+                events shouldHaveSize 5
+                events.shouldForAll { it.value.shouldBeTypeOf<CustomerCreatedEvent>() }
+            }
+            test("produces a `CustomerCreatedEvent` when a customer is inserted and updated in the same transaction") {
+                val txnId = randomTxnId()
+                val customerId = randomId()
+                sendInput(
+                    customerMessage(
+                        headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false),
+                        customerData(customerId),
+                    ),
+                    customerMessage(
+                        headers(txnId, operation.UPDATE, eventCounter = 2, lastEvent = true),
+                        customerData(customerId),
+                    ),
+                )
+
+                val events = readOutputs()
+
+                events shouldHaveSize 1
+                events.first().value.shouldBeTypeOf<CustomerCreatedEvent>()
+            }
         }
-        test("produces five `CustomerCreatedEvent`s from a five-record transaction") {
-            val txnId = randomTxnId()
-            sendInput(
-                customerMessage(headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false)),
-                customerMessage(headers(txnId, operation.INSERT, eventCounter = 2, lastEvent = false)),
-                customerMessage(headers(txnId, operation.INSERT, eventCounter = 3, lastEvent = false)),
-                customerMessage(headers(txnId, operation.INSERT, eventCounter = 4, lastEvent = false)),
-                customerMessage(headers(txnId, operation.INSERT, eventCounter = 5, lastEvent = true)),
-            )
-
-            val events = readOutputs()
-
-            events shouldHaveSize 5
-            events.shouldForAll { it.value.shouldBeTypeOf<CustomerCreatedEvent>() }
-        }
-        test("produces a `CustomerCreatedEvent` when a customer is inserted and updated in the same transaction") {
-            val txnId = randomTxnId()
-            val customerId = randomId()
-            sendInput(
-                customerMessage(
-                    headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false),
-                    customerData(customerId),
-                ),
-                customerMessage(
-                    headers(txnId, operation.UPDATE, eventCounter = 2, lastEvent = true),
-                    customerData(customerId),
-                ),
-            )
-
-            val events = readOutputs()
-
-            events shouldHaveSize 1
-            events.first().value.shouldBeTypeOf<CustomerCreatedEvent>()
-        }
-    }
-})
+    })

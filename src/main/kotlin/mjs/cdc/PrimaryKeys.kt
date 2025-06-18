@@ -32,7 +32,9 @@ import java.time.Instant
 
 interface PK
 
-data class AddressPk(val id: Long) : PK
+data class AddressPk(
+    val id: Long,
+) : PK
 
 inline val AddressMessage.pk: AddressPk
     get() = AddressPk(this.data.addressId)
@@ -40,7 +42,9 @@ inline val AddressMessage.pk: AddressPk
 inline val Address.pk: AddressPk
     get() = AddressPk(this.id)
 
-data class CustomerPk(val id: Long) : PK
+data class CustomerPk(
+    val id: Long,
+) : PK
 
 inline val CustomerMessage.pk: CustomerPk
     get() = CustomerPk(this.data.customerId)
@@ -48,7 +52,10 @@ inline val CustomerMessage.pk: CustomerPk
 inline val Customer.pk: CustomerPk
     get() = CustomerPk(this.id)
 
-data class CustomerNamePk(val id: Long, val created: Instant) : PK
+data class CustomerNamePk(
+    val id: Long,
+    val created: Instant,
+) : PK
 
 inline val CustomerNameMessage.pk: CustomerNamePk
     get() = CustomerNamePk(this.data.id, this.data.created)
@@ -56,7 +63,10 @@ inline val CustomerNameMessage.pk: CustomerNamePk
 inline val CustomerName.pk: CustomerNamePk
     get() = CustomerNamePk(this.id, this.createdTimestamp)
 
-data class CustomerAddressPk(val customerId: Long, val addressId: Long) : PK
+data class CustomerAddressPk(
+    val customerId: Long,
+    val addressId: Long,
+) : PK
 
 inline val CustomerAddressMessage.pk: CustomerAddressPk
     get() = CustomerAddressPk(this.data.customerId, this.data.addressId)
@@ -69,14 +79,15 @@ inline val CustomerAddress.pk: CustomerAddressPk
  * database type; or `null` otherwise.
  */
 inline val SpecificRecord.pk: PK?
-    get() = when (this) {
-        is AddressMessage -> this.pk
-        is CustomerMessage -> this.pk
-        is CustomerNameMessage -> this.pk
-        is CustomerAddressMessage -> this.pk
-        is Address -> this.pk
-        is Customer -> this.pk
-        is CustomerName -> this.pk
-        is CustomerAddress -> this.pk
-        else -> null
-    }
+    get() =
+        when (this) {
+            is AddressMessage -> this.pk
+            is CustomerMessage -> this.pk
+            is CustomerNameMessage -> this.pk
+            is CustomerAddressMessage -> this.pk
+            is Address -> this.pk
+            is Customer -> this.pk
+            is CustomerName -> this.pk
+            is CustomerAddress -> this.pk
+            else -> null
+        }

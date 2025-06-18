@@ -27,15 +27,23 @@ fun customerData(
     created: Instant = randomPastInstant(),
     lastUpdated: Instant = created,
     gender: String? = null,
-): CustomerData = CustomerData.newBuilder()
-    .setCustomerId(id)
-    .setCreated(created)
-    .setLastUpdated(lastUpdated)
-    .setGender(gender)
-    .build()
+): CustomerData =
+    CustomerData
+        .newBuilder()
+        .setCustomerId(id)
+        .setCreated(created)
+        .setLastUpdated(lastUpdated)
+        .setGender(gender)
+        .build()
 
 fun customerMessage(
     headers: Headers = headers(),
     data: CustomerData = customerData(),
     beforeData: CustomerData? = null,
-): CustomerMessage = CustomerMessage.newBuilder().setHeaders(headers).setData(data).setBeforeData(beforeData).build()
+): CustomerMessage =
+    CustomerMessage
+        .newBuilder()
+        .setHeaders(headers)
+        .setData(data)
+        .setBeforeData(beforeData)
+        .build()

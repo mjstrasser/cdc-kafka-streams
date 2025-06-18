@@ -34,79 +34,80 @@ import mjs.entities.CustomerCreatedEvent
 import mjs.entities.CustomerModifiedEvent
 import mjs.kotest.description
 
-class AddressAndCustomerTest : TopologyTestSpec({
+class AddressAndCustomerTest :
+    TopologyTestSpec({
 
-    description(
-        """
-        Tests of inserts into `Customer`, `Address` and `CustomerAddress` tables in the same transaction.
-        """.trimIndent(),
-    )
-
-    test(
-        "Inserting one Address and one CustomerAddress records produces one `AddressCreatedEvent`" +
-            " and one `CustomerModifiedEvent`",
-    ) {
-        val txnId = randomTxnId()
-        val customerId = randomId()
-        val addressId = randomId()
-        sendInput(
-            addressMessage(
-                headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false),
-                addressData(addressId),
-            ),
-            customerAddressMessage(
-                headers(txnId, operation.INSERT, eventCounter = 2, lastEvent = true),
-                customerAddressData(customerId, addressId),
-            ),
+        description(
+            """
+            Tests of inserts into `Customer`, `Address` and `CustomerAddress` tables in the same transaction.
+            """.trimIndent(),
         )
 
-        val events = readOutputs()
+        test(
+            "Inserting one Address and one CustomerAddress records produces one `AddressCreatedEvent`" +
+                " and one `CustomerModifiedEvent`",
+        ) {
+            val txnId = randomTxnId()
+            val customerId = randomId()
+            val addressId = randomId()
+            sendInput(
+                addressMessage(
+                    headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false),
+                    addressData(addressId),
+                ),
+                customerAddressMessage(
+                    headers(txnId, operation.INSERT, eventCounter = 2, lastEvent = true),
+                    customerAddressData(customerId, addressId),
+                ),
+            )
 
-        events shouldHaveSize 2
-        val sortedEvents = events.sortedBy { it.value::class.java.simpleName }
-        with(sortedEvents.first()) {
-            key shouldBe addressId.toString()
-            value.shouldBeTypeOf<AddressCreatedEvent>()
-        }
-        with(sortedEvents.last()) {
-            key shouldBe customerId.toString()
-            value.shouldBeTypeOf<CustomerModifiedEvent>()
-        }
-    }
+            val events = readOutputs()
 
-    test(
-        "Inserting `Customer`, `Address` and `CustomerAddress` records produces one `AddressCreatedEvent`" +
-            " and one `CustomerCreatedEvent`",
-    ) {
-        val txnId = randomTxnId()
-        val customerId = randomId()
-        val addressId = randomId()
-        sendInput(
-            addressMessage(
-                headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false),
-                addressData(addressId),
-            ),
-            customerMessage(
-                headers(txnId, operation.INSERT, eventCounter = 2, lastEvent = false),
-                customerData(customerId),
-            ),
-            customerAddressMessage(
-                headers(txnId, operation.INSERT, eventCounter = 3, lastEvent = true),
-                customerAddressData(customerId, addressId),
-            ),
-        )
-
-        val events = readOutputs()
-
-        events shouldHaveSize 2
-        val sortedEvents = events.sortedBy { it.value::class.java.simpleName }
-        with(sortedEvents.first()) {
-            key shouldBe addressId.toString()
-            value.shouldBeTypeOf<AddressCreatedEvent>()
+            events shouldHaveSize 2
+            val sortedEvents = events.sortedBy { it.value::class.java.simpleName }
+            with(sortedEvents.first()) {
+                key shouldBe addressId.toString()
+                value.shouldBeTypeOf<AddressCreatedEvent>()
+            }
+            with(sortedEvents.last()) {
+                key shouldBe customerId.toString()
+                value.shouldBeTypeOf<CustomerModifiedEvent>()
+            }
         }
-        with(sortedEvents.last()) {
-            key shouldBe customerId.toString()
-            value.shouldBeTypeOf<CustomerCreatedEvent>()
+
+        test(
+            "Inserting `Customer`, `Address` and `CustomerAddress` records produces one `AddressCreatedEvent`" +
+                " and one `CustomerCreatedEvent`",
+        ) {
+            val txnId = randomTxnId()
+            val customerId = randomId()
+            val addressId = randomId()
+            sendInput(
+                addressMessage(
+                    headers(txnId, operation.INSERT, eventCounter = 1, lastEvent = false),
+                    addressData(addressId),
+                ),
+                customerMessage(
+                    headers(txnId, operation.INSERT, eventCounter = 2, lastEvent = false),
+                    customerData(customerId),
+                ),
+                customerAddressMessage(
+                    headers(txnId, operation.INSERT, eventCounter = 3, lastEvent = true),
+                    customerAddressData(customerId, addressId),
+                ),
+            )
+
+            val events = readOutputs()
+
+            events shouldHaveSize 2
+            val sortedEvents = events.sortedBy { it.value::class.java.simpleName }
+            with(sortedEvents.first()) {
+                key shouldBe addressId.toString()
+                value.shouldBeTypeOf<AddressCreatedEvent>()
+            }
+            with(sortedEvents.last()) {
+                key shouldBe customerId.toString()
+                value.shouldBeTypeOf<CustomerCreatedEvent>()
+            }
         }
-    }
-})
+    })

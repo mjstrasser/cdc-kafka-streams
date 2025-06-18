@@ -31,18 +31,25 @@ fun customerNameData(
     id: Long = randomId(),
     created: Instant = randomPastInstant(),
     lastUpdated: Instant = created,
-): CustomerNameData = CustomerNameData.newBuilder()
-    .setId(id)
-    .setCreated(created)
-    .setLastUpdated(lastUpdated)
-    .setCustomerId(customerId)
-    .setName(name)
-    .setSortName(sortName)
-    .build()
+): CustomerNameData =
+    CustomerNameData
+        .newBuilder()
+        .setId(id)
+        .setCreated(created)
+        .setLastUpdated(lastUpdated)
+        .setCustomerId(customerId)
+        .setName(name)
+        .setSortName(sortName)
+        .build()
 
 fun customerNameMessage(
     headers: Headers = headers(),
     data: CustomerNameData = customerNameData(),
     beforeDate: CustomerNameData? = null,
 ): CustomerNameMessage =
-    CustomerNameMessage.newBuilder().setHeaders(headers).setData(data).setBeforeData(beforeDate).build()
+    CustomerNameMessage
+        .newBuilder()
+        .setHeaders(headers)
+        .setData(data)
+        .setBeforeData(beforeDate)
+        .build()

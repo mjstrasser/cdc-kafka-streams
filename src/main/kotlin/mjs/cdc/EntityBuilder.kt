@@ -27,7 +27,6 @@ import org.apache.kafka.streams.KeyValue
  * Builder for domain entities from completed [Transaction] objects.
  */
 object EntityBuilder {
-
     private val logger = noCoLogger<EntityBuilder>()
 
     /**
@@ -36,30 +35,36 @@ object EntityBuilder {
      * Each entity is for a single database primary key value: thus, if a transaction contains an
      * insert and an update to the same table, there will be one entity event message produced.
      */
-    fun build(transactionId: String, transaction: Transaction): List<KeyValue<String, SpecificRecord>> {
+    fun build(
+        transactionId: String,
+        transaction: Transaction,
+    ): List<KeyValue<String, SpecificRecord>> {
         logger.debug("Building events for transaction {transactionId}", transactionId)
 
-        val addressEvents = addressEntityMessages(transaction)
-            .mapNotNull { AddressEventBuilder.build(it) }
-            .map { KeyValue(eventIdFrom(it), it) }
+        val addressEvents =
+            addressEntityMessages(transaction)
+                .mapNotNull { AddressEventBuilder.build(it) }
+                .map { KeyValue(eventIdFrom(it), it) }
 
-        val customerEvents = customerEntityMessages(transaction)
-            .mapNotNull { CustomerEventBuilder.build(it) }
-            .map { KeyValue(eventIdFrom(it), it) }
+        val customerEvents =
+            customerEntityMessages(transaction)
+                .mapNotNull { CustomerEventBuilder.build(it) }
+                .map { KeyValue(eventIdFrom(it), it) }
 
         return addressEvents + customerEvents
     }
 
-    private fun eventIdFrom(eventMessage: SpecificRecord): String = when (eventMessage) {
-        is AddressCreatedEvent -> eventMessage.addressId.toString()
-        is AddressModifiedEvent -> eventMessage.addressId.toString()
-        is CustomerCreatedEvent -> eventMessage.customerId.toString()
-        is CustomerModifiedEvent -> eventMessage.customerId.toString()
-        else -> {
-            logger.warn("Unknown ID from event message of type {messageType}", eventMessage.messageType)
-            "0"
+    private fun eventIdFrom(eventMessage: SpecificRecord): String =
+        when (eventMessage) {
+            is AddressCreatedEvent -> eventMessage.addressId.toString()
+            is AddressModifiedEvent -> eventMessage.addressId.toString()
+            is CustomerCreatedEvent -> eventMessage.customerId.toString()
+            is CustomerModifiedEvent -> eventMessage.customerId.toString()
+            else -> {
+                logger.warn("Unknown ID from event message of type {messageType}", eventMessage.messageType)
+                "0"
+            }
         }
-    }
 
     /**
      * Split a list into lists, grouped by the selector function that returns the key of a record.
@@ -70,8 +75,9 @@ object EntityBuilder {
     /**
      * Sort a list of CDC messages into transaction order as specified in the message header.
      */
-    private fun <T : SpecificRecord> inTransactionOrder(messages: List<T>): List<T> = messages
-        .sortedBy { it.headers?.transactionEventCounter }
+    private fun <T : SpecificRecord> inTransactionOrder(messages: List<T>): List<T> =
+        messages
+            .sortedBy { it.headers?.transactionEventCounter }
 
     /**
      * Extract any address CDC messages from the transaction, into lists by address ID.
@@ -92,10 +98,11 @@ object EntityBuilder {
     /**
      * Extract the customer ID from a customer CDC message.
      */
-    fun customerIdFrom(message: SpecificRecord): Long = when (message) {
-        is CustomerMessage -> message.data.customerId
-        is CustomerNameMessage -> message.data.customerId
-        is CustomerAddressMessage -> message.data.customerId
-        else -> 0
-    }
+    fun customerIdFrom(message: SpecificRecord): Long =
+        when (message) {
+            is CustomerMessage -> message.data.customerId
+            is CustomerNameMessage -> message.data.customerId
+            is CustomerAddressMessage -> message.data.customerId
+            else -> 0
+        }
 }

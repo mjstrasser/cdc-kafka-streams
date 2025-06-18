@@ -56,13 +56,14 @@ typealias AddressMessage = mjs.database.address.DataRecord
  */
 
 val SpecificRecord.headers: Headers?
-    get() = when (this) {
-        is CustomerMessage -> this.headers
-        is CustomerNameMessage -> this.headers
-        is CustomerAddressMessage -> this.headers
-        is AddressMessage -> this.headers
-        else -> null
-    }
+    get() =
+        when (this) {
+            is CustomerMessage -> this.headers
+            is CustomerNameMessage -> this.headers
+            is CustomerAddressMessage -> this.headers
+            is AddressMessage -> this.headers
+            else -> null
+        }
 
 val SpecificRecord.transactionId: String?
     get() = this.headers?.transactionId
@@ -71,11 +72,12 @@ val SpecificRecord.operation: operation?
     get() = this.headers?.operation
 
 val SpecificRecord.messageType: String?
-    get() = when (this) {
-        is CustomerMessage -> "Customer"
-        is CustomerNameMessage -> "CustomerName"
-        is CustomerAddressMessage -> "CustomerAddress"
-        is AddressMessage -> "Address"
+    get() =
+        when (this) {
+            is CustomerMessage -> "Customer"
+            is CustomerNameMessage -> "CustomerName"
+            is CustomerAddressMessage -> "CustomerAddress"
+            is AddressMessage -> "Address"
 
-        else -> this.schema.fullName
-    }
+            else -> this.schema.fullName
+        }
