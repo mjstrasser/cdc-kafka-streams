@@ -1,10 +1,8 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.8.20"
-    id("com.github.davidmc24.gradle.plugin.avro") version "1.6.0"
-    id("com.diffplug.spotless") version "6.16.0"
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    kotlin("jvm") version "2.1.21"
+    id("com.github.davidmc24.gradle.plugin.avro") version "1.9.1"
+    id("com.diffplug.spotless") version "7.0.4"
+    id("io.gitlab.arturbosch.detekt") version "1.23.8"
 }
 
 group = "com.mjs"
@@ -20,22 +18,24 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-    implementation("org.apache.kafka:kafka-streams:3.4.0")
-    implementation("io.confluent:kafka-streams-avro-serde:7.3.2")
+    implementation("org.apache.kafka:kafka-streams:3.9.1")
+    implementation("io.confluent:kafka-streams-avro-serde:7.9.1")
 
-    implementation("org.apache.avro:avro:1.11.1")
+    implementation("org.apache.avro:avro:1.12.0")
 
-    implementation("io.klogging:slf4j-klogging:0.3.0")
+    implementation("io.klogging:slf4j-klogging:0.10.1")
 
-    testImplementation("org.apache.kafka:kafka-streams-test-utils:3.4.0")
-    testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
-    testImplementation("com.michaelstrasser:kotest-html-reporter:0.6.3")
+    testImplementation("org.apache.kafka:kafka-streams-test-utils:3.9.1")
+    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
+    testImplementation("com.michaelstrasser:kotest-html-reporter:0.7.3")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+    compilerOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
     }
 }
 
@@ -68,7 +68,7 @@ spotless {
         licenseHeader(kotlinLicenseHeader)
 
         trimTrailingWhitespace()
-        indentWithSpaces()
+        leadingTabsToSpaces()
         endWithNewline()
     }
 }

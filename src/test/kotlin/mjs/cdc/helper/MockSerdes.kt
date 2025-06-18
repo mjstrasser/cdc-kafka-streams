@@ -30,6 +30,11 @@ object MockSerdes {
 
     private fun <T : SpecificRecord> valueSerde(): SpecificAvroSerde<T> =
         SpecificAvroSerde<T>(MockSchemaRegistryClient()).apply {
-            configure(mapOf(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG to "mock://dummy"), false)
+            configure(
+                // serdeConfig
+                mapOf(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG to "mock://dummy"),
+                // isSerdeForRecordKeys
+                false,
+            )
         }
 }
