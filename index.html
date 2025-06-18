@@ -133,7 +133,7 @@ h2 {
   </head>
   <body>
     <h1>Test Results</h1>
-    <p class="timestamp">Time: 2023-05-02T00:13:40.292299366Z<br>Commit: 063ff37c4d5c1dd8019d26bdf6ed1193e8502c69<br>Message: Upgrade to <span class='code'>gradle/gradle-build-action@2.4.2</span> because of vulnerability in earlier versions</p>
+    <p class="timestamp">Time: 2025-06-18T05:31:03.163477191Z<br>Commit: 6b3582bd5e13fc625734decb967df4f56b90d06f<br>Message: Ktlint reformatting</p>
     <div class="toc">
       <h2 id="toc">Specs</h2>
       <div class="toc-entries shadow-box">
@@ -160,12 +160,12 @@ h2 {
       <div class="line">
         <div class="result-col"><span class="result-Success">✓</span></div>
         <div class="name-col Success"><span class="name">Inserting one Address and one CustomerAddress records produces one <span class='code'>AddressCreatedEvent</span> and one <span class='code'>CustomerModifiedEvent</span></span></div>
-        <div class="duration-col"><span class="duration">1444.00ms</span></div>
+        <div class="duration-col"><span class="duration">946.00ms</span></div>
       </div>
       <div class="line">
         <div class="result-col"><span class="result-Success">✓</span></div>
         <div class="name-col Success"><span class="name">Inserting <span class='code'>Customer</span>, <span class='code'>Address</span> and <span class='code'>CustomerAddress</span> records produces one <span class='code'>AddressCreatedEvent</span> and one <span class='code'>CustomerCreatedEvent</span></span></div>
-        <div class="duration-col"><span class="duration">167.00ms</span></div>
+        <div class="duration-col"><span class="duration">136.00ms</span></div>
       </div>
       <h2 id="mjs.cdc.AddressCreatedTest"><span class="result-Success">✓</span>&nbsp;mjs.cdc.AddressCreatedTest&nbsp;<a href="#toc">⇧</a></h2>
       <div class="line">
@@ -176,19 +176,19 @@ h2 {
       <div class="line">
         <div class="result-col"><span class="result-Success">✓</span></div>
         <div class="name-col Success"><span class="name">Inserting address records into the database</span></div>
-        <div class="duration-col"><span class="duration">324.00ms</span></div>
+        <div class="duration-col"><span class="duration">174.00ms</span></div>
       </div>
       <div class="line">
         <div class="block-col"></div>
         <div class="result-col"><span class="result-Success">✓</span></div>
         <div class="name-col Success"><span class="name">produces one <span class='code'>AddressCreatedEvent</span> from a single-record transaction</span></div>
-        <div class="duration-col"><span class="duration">96.00ms</span></div>
+        <div class="duration-col"><span class="duration">46.00ms</span></div>
       </div>
       <div class="line">
         <div class="block-col"></div>
         <div class="result-col"><span class="result-Success">✓</span></div>
         <div class="name-col Success"><span class="name">produces five <span class='code'>AddressCreatedEvent</span>s from a five-record transaction</span></div>
-        <div class="duration-col"><span class="duration">160.00ms</span></div>
+        <div class="duration-col"><span class="duration">97.00ms</span></div>
       </div>
       <h2 id="mjs.cdc.CustomerCreatedTest"><span class="result-Success">✓</span>&nbsp;mjs.cdc.CustomerCreatedTest&nbsp;<a href="#toc">⇧</a></h2>
       <div class="line">
@@ -199,25 +199,25 @@ h2 {
       <div class="line">
         <div class="result-col"><span class="result-Success">✓</span></div>
         <div class="name-col Success"><span class="name">Inserting customer records into the database</span></div>
-        <div class="duration-col"><span class="duration">418.00ms</span></div>
+        <div class="duration-col"><span class="duration">228.00ms</span></div>
       </div>
       <div class="line">
         <div class="block-col"></div>
         <div class="result-col"><span class="result-Success">✓</span></div>
         <div class="name-col Success"><span class="name">produces one <span class='code'>CustomerCreatedEvent</span> from a single-record transaction</span></div>
-        <div class="duration-col"><span class="duration">92.00ms</span></div>
+        <div class="duration-col"><span class="duration">50.00ms</span></div>
       </div>
       <div class="line">
         <div class="block-col"></div>
         <div class="result-col"><span class="result-Success">✓</span></div>
         <div class="name-col Success"><span class="name">produces five <span class='code'>CustomerCreatedEvent</span>s from a five-record transaction</span></div>
-        <div class="duration-col"><span class="duration">160.00ms</span></div>
+        <div class="duration-col"><span class="duration">101.00ms</span></div>
       </div>
       <div class="line">
         <div class="block-col"></div>
         <div class="result-col"><span class="result-Success">✓</span></div>
         <div class="name-col Success"><span class="name">produces a <span class='code'>CustomerCreatedEvent</span> when a customer is inserted and updated in the same transaction</span></div>
-        <div class="duration-col"><span class="duration">74.00ms</span></div>
+        <div class="duration-col"><span class="duration">45.00ms</span></div>
       </div>
     </div>
     <div class="shadow-box tagline">Report generated by <a href="https://github.com/mjstrasser/kotest-html-reporter#kotest-html-reporter" target="_blank">Kotest HTML Reporter</a></div>
